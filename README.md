@@ -1,12 +1,11 @@
 # retesteth
 
-A test generation tool for the test fillers https://github.com/ethereum/tests/tree/develop/src  
+A test generation tool for the test fillers https://github.com/gnosischain/tests/tree/develop/src  
 Using state transition tool [t8n](https://ethereum-tests.readthedocs.io/en/latest/t8ntool-ref.html)  
 More t8n spec docs: https://github.com/ethereum/go-ethereum/tree/master/cmd/evm  
-Execution stats: http://retesteth.ethdevops.io/  
-Web interface: http://retesteth.ethdevops.io/web/
 
 # Supported clients / evm's
+- [nethermind](https://github.com/nethermindeth/nethermind)
 - [geth](https://github.com/ethereum/go-ethereum)   
 - [besu](https://github.com/hyperledger/besu)   
 - [nimbus](https://github.com/status-im/nimbus-eth1)  
