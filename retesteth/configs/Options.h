@@ -57,6 +57,8 @@ extern std::string const t8ntool_start;
 #define DECLARE_ETHJS(X) \
   FOR_EACH(X, ethereumjscfg)
 
+#define DECLARE_NETHERMIND(X) \
+  FOR_EACH(X, nethemindcfg)
 
 // Main Configs (T8NTOOL is the base config that puts in to default for other clients as well)
 DECLARE_T8NTOOL(REGISTER)
@@ -68,6 +70,7 @@ DECLARE_OEWRAP(REGISTER)
 DECLARE_ETHJS(REGISTER)
 DECLARE_NIMBUS(REGISTER)
 DECLARE_PYT8N(REGISTER)
+DECLARE_NETHERMIND(REGISTER)
 
 // Example configs
 DECLARE_T8NTOOL_EIP(REGISTER)

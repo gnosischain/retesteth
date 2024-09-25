@@ -109,6 +109,9 @@ if [ "$SCRIPT_NAME" = "dtf.sh" ]; then
             if [ "$var" = "geth" ]; then
                 binpath="/bin/evm"
             fi
+            if [ "$var" = "nethermind" ]; then
+                binpath="/usr/bin/Evm"
+            fi
             if [ "$var" = "nimbus" ]; then
                 binpath="/bin/evm_nimbus"
             fi
