@@ -118,6 +118,9 @@ if [ "$SCRIPT_NAME" = "dtf.sh" ]; then
             if [ "$var" = "besu" ]; then
                 binpath="/usr/bin/besuevm"
             fi
+            if [ "$var" = "nethermind" ]; then
+                binpath="/usr/bin/Evm"
+            fi
             if [ "$var" = "ethereumjs" ]; then
                 echo "ethereumjs no supported yet"
                 binpath=""
@@ -213,5 +216,5 @@ fi
 if [ "$helpversion" -eq 1 ]; then
     docker run retesteth $argstring
 else
-    docker run -w $dockerwdir -e BESU_PATH=/besu -e ETHEREUMJS_PATH=/ethereumjs -e PYSPECS_PATH=/execution-spec-tests -e PYT8N_PATH=/pyt8n -v $testpath:/tests retesteth $argstring --testpath /tests $defaultclient
+    docker run -w $dockerwdir -e BESU_PATH=/besu NETHERMIND_PATH=/nethermind -e ETHEREUMJS_PATH=/ethereumjs -e PYSPECS_PATH=/execution-spec-tests -e PYT8N_PATH=/pyt8n -v $testpath:/tests retesteth $argstring --testpath /tests $defaultclient
 fi
