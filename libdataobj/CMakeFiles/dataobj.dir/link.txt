@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libdataobj.a CMakeFiles/dataobj.dir/ConvertFile.cpp.o CMakeFiles/dataobj.dir/ConvertJsoncpp.cpp.o CMakeFiles/dataobj.dir/ConvertYaml.cpp.o CMakeFiles/dataobj.dir/DataObject.cpp.o CMakeFiles/dataobj.dir/JsonParser.cpp.o CMakeFiles/dataobj.dir/SPointer.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libdataobj.a
