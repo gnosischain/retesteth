@@ -84,6 +84,7 @@ public:
     OptionsInit() {
         DECLARE_T8NTOOL(INIT)
         DECLARE_BESU(INIT)
+        DECLARE_NETHERMIND(INIT)
         DECLARE_EVMONE(INIT)
         DECLARE_ETC(INIT)
         DECLARE_ETCTR(INIT)
