@@ -158,7 +158,7 @@ if [ "$SCRIPT_NAME" = "dtf.sh" ]; then
       dockerwdir="/"
     fi
 
-    docker run --entrypoint /usr/bin/tfinit.sh -it -w $dockerwdir -e BESU_PATH=/besu -e ETHEREUMJS_PATH=/ethereumjs -e PYSPECS_PATH=/execution-spec-tests -e PYT8N_PATH=/pyt8n -v $testpath:/tests retesteth $argstring
+    docker run --entrypoint /usr/bin/tfinit.sh -it -w $dockerwdir -e BESU_PATH=/besu -e NETHERMIND_PATH=/nethermind -e ETHEREUMJS_PATH=/ethereumjs -e PYSPECS_PATH=/execution-spec-tests -e PYT8N_PATH=/pyt8n -v $testpath:/tests retesteth $argstring
     exit 0
 fi
 
