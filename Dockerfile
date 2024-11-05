@@ -3,21 +3,23 @@ FROM ubuntu:20.04 as retesteth
 ARG BESU_SRC="https://github.com/hyperledger/besu.git"
 ARG PYSPECS_SRC="https://github.com/ethereum/execution-spec-tests"
 ARG ETEREUMJS_SRC="https://github.com/ethereumjs/ethereumjs-monorepo.git"
-ARG RETESTETH_SRC="https://github.com/ethereum/retesteth.git"
+ARG RETESTETH_SRC="https://github.com/gnosischain/retesteth.git"
 ARG GETH_SRC="https://github.com/ethereum/go-ethereum.git"
 ARG NIMBUS_SRC="https://github.com/status-im/nimbus-eth1.git"
 ARG EVMONE_SRC="https://github.com/ethereum/evmone.git"
 ARG PYT8N_SRC="https://github.com/ethereum/execution-specs.git"
+ARG NETHERMIND_SRC="https://github.com/NethermindEth/nethermind.git"
 
 # Leave empty to disable the build, can point to commit hash as well
 ARG BESU="main"
 ARG GETH="master"
 ARG NIMBUS="master"
 ARG ETHEREUMJS="master"
-ARG RETESTETH="develop"
+ARG RETESTETH="feat/neth"
 ARG PYSPECS="main"
 ARG EVMONE="master"
 ARG PYT8N="master"
+ARG NETHERMIND="feature/t8n-gnosis"
 
 SHELL ["/bin/bash", "-c"]
 ENV TZ=Etc/UTC
@@ -40,17 +42,26 @@ RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.10 /usr/bin/python3 \
     && ln -s /usr/bin/gcc-11 /usr/bin/gcc \
     && ln -s /usr/bin/g++-11 /usr/bin/g++
 
-# Tests
-#RUN git clone --depth 1 -b master https://github.com/ethereum/tests /tests
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        libc6 \
+        libgcc1 \
+        libgssapi-krb5-2 \
+        libicu66 \
+        libssl1.1 \
+        libstdc++6 \
+        zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
-# Solidity LLLC
-RUN test -n "$RETESTETH" \
-    && git clone --depth 1 -b master https://github.com/winsvega/solidity.git /solidity \
-    && mkdir /build && cd /build \
-    && cmake /solidity -DCMAKE_BUILD_TYPE=Release -DLLL=1 && make lllc \
-    && cp /build/lllc/lllc /bin/lllc \
-    && rm -rf /build /solidity /var/cache/* /root/.hunter/* \
-    || echo "Retesteth is empty, skip LLLC"
+# Install .NET
+ENV DOTNET_VERSION=8.0.0
+
+RUN curl -fSL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Runtime/$DOTNET_VERSION/dotnet-runtime-$DOTNET_VERSION-linux-x64.tar.gz \
+    && mkdir -p /usr/share/dotnet \
+    && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
+    && rm dotnet.tar.gz \
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 # Solidity solc
 RUN wget https://github.com/ethereum/solidity/releases/download/v0.8.21/solc-static-linux \
@@ -139,5 +150,14 @@ RUN test -n "$RETESTETH" \
     && cp /build/retesteth/retesteth /usr/bin/retesteth \
     && rm -rf /build /retesteth /var/cache/* /root/.hunter/* \
     || echo "Retesteth is empty" > /usr/bin/retesteth
+
+RUN test -n "$NETHERMIND" \
+    && git clone $NETHERMIND_SRC /nethermind \
+    & cd /nethermind && git checkout $NETHERMIND \
+    && cd /nethermind \
+    && dotnet publish ./tools/evm/Evm.sln -c Release -o /publish --sc false \ 
+    && cp -R /publish/* /usr/bin/ \
+    && rm -rf /nethermind \
+    || echo "Nethermind is empty"
 
 ENTRYPOINT ["/usr/bin/retesteth"]
